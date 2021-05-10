@@ -1,53 +1,96 @@
-import propTypes from "prop-types";
+// import axios from "axios";
+import React from "react";
+import moviesjson from "./movies.json"
+import Movie from "./Movie.js"
+// import propTypes from "prop-types";
 
-function Potato({name, image , rating}){
-  return (
-  <div>
-    <h2>i like {name} </h2>
-    <h4>{rating} / 5.0  </h4>
-    <img src = {image} alt={name} />
-  </div>
-  )
-}
 
-Potato.propTypes = {
-  name: propTypes.string.isRequired,
-  image: propTypes.string.isRequired,
-  rating: propTypes.number
-}
-
-var food = [
-  {
-    id: 1,
-    name: "kimchi",
-    image: "https://lh3.googleusercontent.com/proxy/z51iB3z4AEV69r_Vin01LBsD5tQg2wEz3TOb17lIRXj85smxmxT5fEpwocUc6mr71R75uk2oW5v29LAUVHw6ubF5J9DSaPa0WrsJdYn6LAu6QLNxsZNKX7MSd6nZWlVg",
-    rating: 4.2
-  },
-  {
-    id: 2,
-    name: "ramen",
-    image: "https://health.chosun.com/site/data/img_dir/2020/09/07/2020090702900_0.jpg",
-    rating: 4.9
-  },
-  {
-    id: 3,
-    name: "kimbab",
-    image: "http://www.nongsaro.go.kr/ps/img/interabang/num207/headerImg.jpg",
-    rating: 5.2
+class App extends React.Component {
+  state = {
+    isLoading: true,
+    count: 0,
+    movies: []
   }
-]
+  // add = () =>{
+  //   console.log("add1 : "+this.state.count);
+  //   this.setState( current => ( {count: current.count +1})); //현재 state에 있는 최신값을 가져온 다음 더함.
+  //   //setstate는 할때마다 리랜더링을 함.
+  // }
+  // minus =() =>{
+  //   console.log("minus")
+  //   this.setState( {count: this.state.count -1}); //랜더링 된 값을 가져와서 뺌
+  //   // this.setState( current => ( {count: current.count -1}));
+  // }
 
-function App() {
-  return (
-    <div>
+  // constructor(pros){
+  //   super(pros)
+  //   console.log("constructor");
+  // }
+  // shouldComponentUpdate(){
+  //   console.log("update전 : "+this.state.count)
+  //   return true;
+  //   // setstate는 무조건 업데이트에 속해있고 setstate를 할때마다 리랜더링이 되지만, 
+  //   // 이 return false값에 의해 리랜더링이 거절된다
+  // }
 
-      hello sidhd sidhd
-      {food.map(dish => (
-        <Potato key={dish.id} name={dish.name} image={dish.image} rating={dish.rating}/>
-      ))}
+  // componentDidMount(){
+  //   console.log("DidMount");
+  // }
+  // componentDidUpdate(){
+  //   console.log("update후: " + this.state.count);
+  // }
+  getMovies = async () => {
+    console.log("3");
+    // const {data:{data:{moves}}} = await axios.get("url");
+    const movies = moviesjson.data.movies;
+   // console.log(movies);
+    this.setState( {movies ,isLoading:false});
 
-    </div>
-  );
+  }
+  componentDidMount() {
+    // setTimeout(() => {
+    //   this.setState(current => ({isLoading: current.isLoading = false}))
+    // }, 2000);
+    console.log("1");
+    this.getMovies();
+    console.log("2");
+  }
+  render() {
+    const { isLoading ,movies} = this.state;
+    return (
+      <section className="container">
+        {isLoading ? (<div className="loader">
+        <span className="loader_text"> Loading... </span>
+        </div> 
+        ) : (
+        <div className="movies"> 
+        {movies.map( movie =>(
+          <Movie 
+          key ={movie.id}
+          id = {movie.id}
+          year = {movie.year}
+          title = {movie.title}
+          summary =  {movie.summary}
+          poster = {movie.medium_cover_image}
+          genres = {movie.genres}
+          />
+        )) }
+        </div>)
+  }
+      </section>
+        
+    )
+  }
+
+  // render() {
+  //   const { isLoading } = this.state;
+  //   return (
+  //     <div>
+  //       <div>{isLoading ? "Loading..." : this.state.movies.map()}</div>
+  //     </div>
+  //   )
+  // }
+
 }
 
 export default App;
