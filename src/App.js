@@ -2,6 +2,7 @@
 import React from "react";
 import moviesjson from "./movies.json"
 import Movie from "./Movie.js"
+import "./App.css";
 // import propTypes from "prop-types";
 
 
